@@ -14,7 +14,7 @@ class PaymentService
     ) {}
 
     /**
-     * Создание платежа и отправка в шлюз
+     * Creates a payment and registers it with the gateway.
      */
     public function createPayment(array $validatedData): Payment
     {
@@ -37,19 +37,20 @@ class PaymentService
     }
 
     /**
-     * Обработка вебхука
+     * Applies the gateway's final status (idempotent).
      */
     public function handleWebhook(string $externalId, string $gatewayStatus): void
     {
         $payment = Payment::where('external_id', $externalId)->first();
 
-        if (!$payment) {
+        if (! $payment) {
             Log::warning("Webhook: Payment not found for external_id: $externalId");
             abort(404, 'Payment not found');
         }
 
         if (in_array($payment->status, [PaymentStatus::PAID, PaymentStatus::FAILED])) {
             Log::info("Webhook: Payment {$payment->id} already processed. Skipping.");
+
             return;
         }
 

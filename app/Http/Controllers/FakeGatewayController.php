@@ -9,17 +9,17 @@ use Illuminate\Support\Str;
 class FakeGatewayController extends Controller
 {
     /**
-     * Эмуляция приема платежа банком.
+     * Simulates a bank accepting the payment and later sending a webhook.
      */
     public function pay(Request $request)
     {
         $request->validate([
             'amount' => 'required',
             'currency' => 'required',
-            'callback_url' => 'required|url'
+            'callback_url' => 'required|url',
         ]);
 
-        $externalId = 'gw_' . Str::random(10);
+        $externalId = 'gw_'.Str::random(10);
 
         $finalStatus = rand(1, 10) > 5 ? 'success' : 'failed';
 

@@ -2,22 +2,22 @@
 
 namespace App\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Exception;
 
 class PaymentGatewayClient
 {
     /**
-     * Отправляет запрос на создание платежа во внешний шлюз.
+     * Sends a payment creation request to the external gateway.
      *
-     * @param array $data
      * @return string External ID
+     *
      * @throws Exception
      */
     public function initiatePayment(array $data): string
     {
-        $gatewayUrl = 'http://127.0.0.1:8001/api/fake-gateway/pay';
+        $gatewayUrl = config('services.payment_gateway.url');
 
         try {
             $response = Http::post($gatewayUrl, [
@@ -29,7 +29,7 @@ class PaymentGatewayClient
 
             if ($response->failed()) {
                 Log::error('Gateway error', ['body' => $response->body(), 'status' => $response->status()]);
-                throw new Exception('Gateway returned error: ' . $response->status());
+                throw new Exception('Gateway returned error: '.$response->status());
             }
 
             $json = $response->json();

@@ -28,6 +28,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'payment_gateway' => [
+        'url' => env('PAYMENT_GATEWAY_URL', 'http://127.0.0.1:8001/api/fake-gateway/pay'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

@@ -16,7 +16,7 @@ class PaymentController extends Controller
     ) {}
 
     /**
-     * 1. Создание платежа
+     * Create a payment.
      */
     public function store(StorePaymentRequest $request): JsonResponse
     {
@@ -30,16 +30,17 @@ class PaymentController extends Controller
     }
 
     /**
-     * 2. Получение информации
+     * Show a payment.
      */
     public function show($id): JsonResponse
     {
         $payment = Payment::findOrFail($id);
+
         return response()->json($payment);
     }
 
     /**
-     * 3. Вебхук
+     * Gateway webhook callback.
      */
     public function webhook(WebhookRequest $request): JsonResponse
     {

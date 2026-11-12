@@ -1,5 +1,7 @@
 # Payment Service API (Laravel)
 
+[![tests](https://github.com/RuslanBaatyrbekov/Api-project/actions/workflows/tests.yml/badge.svg)](https://github.com/RuslanBaatyrbekov/Api-project/actions/workflows/tests.yml)
+
 A robust REST API for processing payments, featuring external gateway simulation and asynchronous webhook handling.
 
 ## 🚀 Key Features
@@ -20,7 +22,7 @@ A robust REST API for processing payments, featuring external gateway simulation
 
 1. Clone the repository and install dependencies:
 ```bash
-git clone [https://github.com/RuslanBaatyrbekov/Api-project.git](https://github.com/RuslanBaatyrbekov/Api-project.git)
+git clone https://github.com/RuslanBaatyrbekov/Api-project.git
 cd Api-project
 composer install
 ```
@@ -71,7 +73,7 @@ php artisan queue:work
 
 ### 1. Create a Payment
 ```http
-POST [http://127.0.0.1:8000/api/payments](http://127.0.0.1:8000/api/payments)
+POST http://127.0.0.1:8000/api/payments
 ```
 **Payload:**
 ```json
@@ -85,5 +87,16 @@ POST [http://127.0.0.1:8000/api/payments](http://127.0.0.1:8000/api/payments)
 ### 2. Check Payment Status
 Wait 2-3 seconds for the asynchronous webhook to process, then run:
 ```http
-GET [http://127.0.0.1:8000/api/payments/](http://127.0.0.1:8000/api/payments/){id}
+GET http://127.0.0.1:8000/api/payments/{id}
 ```
+
+## ✅ Tests
+
+Feature tests cover payment creation, gateway failures (transaction rollback), webhook processing and idempotency. The external gateway is faked with `Http::fake()`, so no running servers are needed:
+
+```bash
+php artisan test
+```
+
+The gateway URL is configurable via `PAYMENT_GATEWAY_URL` in `.env`.
+

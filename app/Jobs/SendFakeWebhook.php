@@ -17,12 +17,13 @@ class SendFakeWebhook implements ShouldQueue
     public function __construct(
         public string $callbackUrl,
         public string $externalId,
-        public string $status
+        public string $status,
+        public int $delaySeconds = 2,
     ) {}
 
     public function handle(): void
     {
-        sleep(2);
+        sleep($this->delaySeconds);
 
         Log::info("FakeGateway: Sending webhook for {$this->externalId} to {$this->callbackUrl}");
 
